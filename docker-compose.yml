@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   mongo_db:
-    image: mongo:3.2
+    image: mongo:${MONGO_VERSION}
     volumes:
       - post_db:/data/db
     networks:
@@ -11,9 +11,9 @@ services:
           - comment_db
   ui:
     build: ./ui
-    image: ${USERNAME}/ui:latest
+    image: ${USERNAME}/ui:${UI_VERSION}
     ports:
-      - 127.0.0.1:9292:9292/tcp
+      - ${UI_PUBLISHING_PORT}
     networks:
       front_net:
         aliases:
@@ -21,13 +21,13 @@ services:
           - post_ui
   post:
     build: ./post-py
-    image: ${USERNAME}/post:latest
+    image: ${USERNAME}/post:${POST_VERSION}
     networks:
       - front_net
       - back_net
   comment:
     build: ./comment
-    image: ${USERNAME}/comment:latest
+    image: ${USERNAME}/comment:${COMMENT_VERSION}
     networks:
       - front_net
       - back_net
